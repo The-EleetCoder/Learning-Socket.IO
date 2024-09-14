@@ -22,8 +22,9 @@
 
       // Listen for "message" events from the server and display the message in the chat
       socket.on("message", (message) => {
+        // Display the received message from other users
         const p = document.createElement("p");
-        p.innerText = message;
+        p.innerText = "Sender: " + message; // Prefix with "You:" for clarity
         allMessages.appendChild(p);
       });
 
@@ -35,9 +36,16 @@
       sendBtn.addEventListener("click", (e) => {
         const message = messageInput.value;
 
-        // Emit the message to the server through the "user-message" event
+        // Display the message locally for the sender
+        const p = document.createElement("p");
+        p.innerText = "You: " + message; // Prefix with "You:" for clarity
+        allMessages.appendChild(p);
+
+        // Emit the message to the server so that others can receive it
         socket.emit("user-message", message);
-        console.log(message);
+
+        // Clear the message input field after sending
+        messageInput.value = "";
       });
     </script>
   </body>

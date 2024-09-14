@@ -26,7 +26,15 @@ io.on("connection", (socket) => {
     console.log("a new message from user: ", message); // Log the received message
 
     // Broadcast the message to all connected clients, including the sender
-    io.emit("message", message);
+    // io.emit("message", message);
+
+    // Broadcast the message to all connected clients, except the sender
+    socket.broadcast.emit("message", message);
+  });
+
+  // Log when a user disconnects
+  socket.on("disconnect", () => {
+    console.log("a user disconnected: ", socket.id);
   });
 });
 
