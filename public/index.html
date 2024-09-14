@@ -9,24 +9,33 @@
     <h1>Chatting</h1>
     <input type="text" id="message" placeholder="enter message" />
     <button id="sendBtn">Send</button>
+
+    <!-- Section where all the chat messages will be displayed -->
     <div id="messages"></div>
 
+    <!-- Including the Socket.IO client-side library -->
     <script src="/socket.io/socket.io.js"></script>
+
     <script>
+      // Establish a connection with the server using Socket.IO
       const socket = io();
 
+      // Listen for "message" events from the server and display the message in the chat
       socket.on("message", (message) => {
         const p = document.createElement("p");
         p.innerText = message;
         allMessages.appendChild(p);
       });
 
+      // Get references to the DOM elements for the send button, message input, and message display
       const sendBtn = document.getElementById("sendBtn");
       const messageInput = document.getElementById("message");
       const allMessages = document.getElementById("messages");
 
       sendBtn.addEventListener("click", (e) => {
         const message = messageInput.value;
+
+        // Emit the message to the server through the "user-message" event
         socket.emit("user-message", message);
         console.log(message);
       });
